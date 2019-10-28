@@ -1,0 +1,23 @@
+{
+  "name": "profesionaljs",
+  "version": "1.0.0",
+  "description": "Proyecto del Curso Profesional de JavaScript de la Escuela de JS de Platzi",
+  "license": "MIT",
+  "author": "Massimo Di Berardino <maxdo1996@gmail.com>",
+  "keywords": [
+    "platzi"
+  ],
+  "scripts": {
+    "start": "live-server"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
+    "live-server": "^1.2.1"
+  },
+  "dependencies": {
+    "eslint": "^6.6.0",
+    "eslint-plugin-import": "^2.18.2"
+  },
+  "main": "index.js"
+}
