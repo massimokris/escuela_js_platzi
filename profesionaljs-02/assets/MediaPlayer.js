@@ -35,4 +35,4 @@ MediaPlayer.prototype.toggleMute = function () {
     this.media.muted ? this.unmute() : this.mute();
 }
 
-//export default MediaPlayer;
+module.exports = MediaPlayer;
