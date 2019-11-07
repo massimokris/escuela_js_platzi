@@ -3,11 +3,15 @@
   "version": "1.0.0",
   "description": "Proyecto del curso profesional de js con platzi",
   "scripts": {
-    "start": "live-server"
+    "start": "parcel index.html ejercicios/index.html ejercicios/**/*.html"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "live-server": "^1.2.1"
-  }
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^3.7.2"
+  },
+  "browserslist": [
+    "last 1 Chrome version"
+  ]
 }
