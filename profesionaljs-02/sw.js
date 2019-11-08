@@ -4,7 +4,7 @@ self.addEventListener('install', event => {
     event.waitUntil(precache());
 });
 
-screenLeft.addEventListener('fetch', event => {
+self.addEventListener('fetch', event => {
     const request = event.request;
     //get
     if (request.method != 'GET'){
@@ -21,13 +21,13 @@ screenLeft.addEventListener('fetch', event => {
 const precache = async () => {
     const cache = await caches.open(VERSION);
     return cache.addAll([
-        '/',
-        '/index.html',
-        '/assets/index.js',
-        '/assets/puglins/AutoPlay.js',
-        '/assets/plugins/AutoPause.js',
-        '/assets/index.css',
-        '/assets/BigBuckBunny.mp4'
+        // '/',
+        // '/index.html',
+        // '/assets/index.js',
+        // '/assets/puglins/AutoPlay.js',
+        // '/assets/plugins/AutoPause.js',
+        // '/assets/index.css',
+        // '/assets/BigBuckBunny.mp4'
     ]);
 }
 

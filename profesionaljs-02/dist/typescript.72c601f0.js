@@ -125,7 +125,102 @@ var add = function (a, b) {
 };
 
 var sum = add(2, 3);
-console.log(sum);
+console.log(sum); //tipos de datos
+//Boolean
+
+var muted = true;
+muted = false; //Numeros
+
+var numerador = 42;
+var denominador = 6;
+var resultado = numerador / denominador; //string
+
+var nombre = 'massimo';
+var saludo = "Me llamo " + nombre; //arreglos
+
+var people = [];
+people = ['massimo', 'isabela', 'maria']; //people.push("9000");
+//arreglos de multiples tipos de datos
+
+var peopleAndNumbers = [];
+peopleAndNumbers.push('ricardo');
+peopleAndNumbers.push(9000); //enum
+
+var Color;
+
+(function (Color) {
+  Color["Rojo"] = "Rojo";
+  Color["Verde"] = "Verde";
+  Color["Azul"] = "Azul";
+})(Color || (Color = {}));
+
+var colorFavorito = Color.Azul;
+console.log("Mi color favorito es " + colorFavorito); // any
+
+var comodin = "Joker";
+comodin = {
+  type: 'Wilcard'
+}; //object
+
+var someObject = {
+  type: 'Wilcard'
+}; //funciones
+
+function suma(a, b) {
+  return a + b;
+}
+
+var sumita = suma(2, 4);
+
+function createAdder(a) {
+  return function (b) {
+    return b + a;
+  };
+}
+
+var addFour = createAdder(4);
+var fourPlus6 = addFour(6); //funcion simple
+
+function fullName(firstName, lastName) {
+  return firstName + " " + lastName;
+} //funcion que puede o no recibir alguno de los parametros
+
+
+function fullNameOpcional(firstName, lastName) {
+  return firstName + " " + lastName;
+} //funcion con valores pre seteados
+
+
+function fullNameSeteado(firstName, lastName) {
+  if (firstName === void 0) {
+    firstName = 'pedro';
+  }
+
+  if (lastName === void 0) {
+    lastName = 'diaz';
+  }
+
+  return firstName + " " + lastName;
+}
+
+var pedro = fullName('pedro', 'diaz');
+var pedroOpcional = fullNameOpcional('pedro');
+var pedroSeteado = fullNameSeteado();
+var rect = {
+  ancho: 4,
+  alto: 6,
+  color: Color.Verde
+};
+
+function area(r) {
+  return r.alto * r.alto;
+}
+
+var areaRect = area(rect);
+
+rect.toString = function () {
+  return this.color ? "Un rectangulo " + this.color : "Un rectangulo";
+};
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -154,7 +249,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54664" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63879" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
