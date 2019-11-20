@@ -1,6 +1,9 @@
 'use stric'
 
 describe('Pruebas del login', () => {
+    // before(() => {
+    //     cy.exec('npm run test:clean')
+    // })
     beforeEach(() => {
         cy.fixture('user.json').as('userData')
         cy.visit('/login')
@@ -9,34 +12,25 @@ describe('Pruebas del login', () => {
 
     it('Debe registrar un usuario', () => {
         cy.get('@userData').then((userData) => {
-            cy.contains('Crear una cuenta').click()
-            cy.get('#name').type(userData.name)
-            cy.get('#title').type(userData.company)
-            cy.get('#email2').type(userData.email)
-            cy.get('#password2').type(userData.password)
-            cy.contains('.button', 'Registrarse').click()
-            cy.wait(3000)
+            cy.createUser(userData)
             cy.get('.error-msg').should('not.exist')
+            cy.screenshot('create-user')
         })
         
     })
 
     it('Debe loguear un usuario', () => {
         cy.get('@userData').then((userData) => {
-            cy.get('#email1').type(userData.email)
-            cy.get('#password1').type(userData.password)
-            cy.contains('.button', 'Ingresar').click()
-            cy.wait(3000)
-            cy.contains('a', 'Dashboard').should('be.visible')
+            cy.loginUser(userData.email, userData.password)
+            cy.screenshot('login-user', {blackout: ['#email1']})
+            cy.contains('a', 'Dashboard').should('be.visible') 
         })
     })
 
-    it.skip('Debe fallar con un usuario erroneo', () => {
-        cy.get('#email1').type('fail@test.com')
-        cy.get('#password1').type('test1234')
-        cy.contains('.button', 'Ingresar').click()
-        cy.wait(3000)
+    it('Debe fallar con un usuario erroneo', () => {
+        cy.loginUser('fail@test.com', 'fallara')
         cy.get('.error-msg').should('be.visible')
+        cy.screenshot('login-failed')
     })
 
     after(() => {
