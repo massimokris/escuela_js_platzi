@@ -3,7 +3,7 @@ const { moviesMock } = require('../utils/mocks/movies');
 
 function moviesApi(app) {
     const router = express.Router();
-    app.use('api/movies', router);
+    app.use('/api/movies', router);
 
     router.get('/', async (req, res, next) => {
         try {
