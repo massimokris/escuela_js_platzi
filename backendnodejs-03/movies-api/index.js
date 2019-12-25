@@ -1,8 +1,15 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 const { config } = require('./config/index');
 const moviesApi = require('./routes/movies.js');
+const { logErrors, wrapErrors, errorHandler } = require('./utils/middleware/errorHandlers');
+const notFoundHandler = require('./utils/middleware/notFoundHandler');
+
+//middelware body parser
+app.use(express.json());
+app.use(cors());
 
 //crear un ruta en express
 //con app le indicamos que metodo va a utilizar (get, post, put, etc)
@@ -32,10 +39,17 @@ const moviesApi = require('./routes/movies.js');
 // });
 
 
-
+//routes
 moviesApi(app);
 
-app.listen(config.port, () => {
-    console.log(`Listening http://localhost:${config.port}`);
-});
+//Catch 404
+app.use(notFoundHandler);
 
+//Errors middelware
+app.use(logErrors);
+app.use(wrapErrors);
+app.use(errorHandler);
+
+app.listen(config.port, () => {
+  console.log(`Listening http://localhost:${config.port}`);
+});
