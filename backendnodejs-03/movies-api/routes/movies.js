@@ -1,12 +1,14 @@
 const express = require('express');
 const MoviesService = require('../services/movies');
 
+//schemas de validacion
 const {
   movieIdSchema,
   createMovieSchema,
   updateMovieSchema
 } = require('../utils/schemas/movies');
 
+//validador de schemas
 const validationHandler = require('../utils/middleware/validationHandler');
 
 function moviesApi(app) {
@@ -15,11 +17,14 @@ function moviesApi(app) {
 
   const moviesService = new MoviesService();
 
+  /**
+   * Endpoint to get all movies
+   */
   router.get('/', async (req, res, next) => {
     const { tags } = req.query;
     try {
       const movies = await moviesService.getMovies({ tags });
-      
+
       res.status(200).json({
         data: movies,
         message: 'Movies listed'
@@ -29,6 +34,9 @@ function moviesApi(app) {
     }
   });
 
+  /**
+   * Endpoint to get a specific movie
+   */
   router.get(
     '/:movieId',
     validationHandler({ movieId: movieIdSchema }, 'params'),
@@ -47,6 +55,9 @@ function moviesApi(app) {
     }
   );
 
+  /**
+   * Endpoint to create a movie
+   */
   router.post(
     '/',
     validationHandler(createMovieSchema),
@@ -64,6 +75,9 @@ function moviesApi(app) {
     }
   );
 
+  /**
+   * Endpoint to replace a specific movie
+   */
   router.put(
     '/:movieId',
     validationHandler({ movieId: movieIdSchema }, 'params'),
@@ -86,6 +100,9 @@ function moviesApi(app) {
     }
   );
 
+  /**
+   * Endpoint to delete a specific movie
+   */
   router.delete(
     '/:movieId',
     validationHandler({ movieId: movieIdSchema }, 'params'),
@@ -103,6 +120,9 @@ function moviesApi(app) {
     }
   );
 
+  /**
+   * Endpoint to update a specific movie
+   */
   router.patch('/:movieId', async (req, res, next) => {
     const { movieId } = req.params;
     const { body: movie } = req;

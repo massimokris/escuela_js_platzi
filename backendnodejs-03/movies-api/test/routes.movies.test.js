@@ -1,7 +1,10 @@
 const assert = require('assert');
 const proxyquire = require('proxyquire');
 
+//mock de prueba para la peliculas y los servicios de las peliculas
 const { moviesMock, MoviesServiceMock } = require('../utils/mocks/movies');
+
+//servidor de prueba basico
 const testServer = require('../utils/testServer');
 
 describe('routes = movies', function() {

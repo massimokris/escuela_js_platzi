@@ -4,7 +4,11 @@ const app = express();
 
 const { config } = require('./config/index');
 const moviesApi = require('./routes/movies.js');
-const { logErrors, wrapErrors, errorHandler } = require('./utils/middleware/errorHandlers');
+const {
+  logErrors,
+  wrapErrors,
+  errorHandler
+} = require('./utils/middleware/errorHandlers');
 const notFoundHandler = require('./utils/middleware/notFoundHandler');
 
 //middelware body parser
@@ -37,7 +41,6 @@ app.use(cors());
 //     }
 //     res.send(`Bisiesto: ${bisiesto}`);
 // });
-
 
 //routes
 moviesApi(app);

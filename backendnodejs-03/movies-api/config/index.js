@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+//tomo la variables de entorno del archivo .env
+//aca puedo definir si el entorno es dev, production o testing
 const config = {
   dev: process.env.NODE_ENV !== 'production',
   port: process.env.PORT || 8001,
