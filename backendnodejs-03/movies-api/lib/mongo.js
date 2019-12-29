@@ -9,10 +9,7 @@ const PASSWORD = encodeURIComponent(config.dbPassword);
 const DB_NAME = config.dbName;
 
 //mongo uri con una ternaria que indica que si lo estoy corriendo en dev o production le seteo instancia distinta de mi BBDD
-const MONGO_URI =
-  !USER === 'mdiberardino'
-    ? `mongodb+srv://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${DB_NAME}?retryWrites=true&w=majority`
-    : `mongodb://${config.dbHost}/${DB_NAME}`;
+const MONGO_URI = `mongodb+srv://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${DB_NAME}?retryWrites=true&w=majority`;
 
 class MongoLib {
   constructor() {
