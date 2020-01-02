@@ -7,9 +7,13 @@ const app = express();
 //importamos la configuracion de nuestras variables de entorno
 const { config } = require('./config/index');
 
+//importamos las rutas de autenticacion
+const authApi = require('./routes/auth');
+
 //importamos las rutas
 //importamos las rutas para movies (get, post, delete, put)
-const moviesApi = require('./routes/movies.js');
+const moviesApi = require('./routes/movies');
+
 //importamos las rutas para user movies (get, post, delete);
 const userMoviesApi = require('./routes/userMovies');
 
@@ -56,6 +60,7 @@ app.use(cors());
 //routes
 //instancio las rutas de los distintos servicios
 //le indico que su router va a ser la instancia del servidor de express
+authApi(app);
 moviesApi(app);
 userMoviesApi(app);
 

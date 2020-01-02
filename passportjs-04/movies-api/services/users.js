@@ -29,7 +29,7 @@ class UsersService {
         //encripto la password del usuario para luego esta persistirla en la base
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const createUserId = await this.mongoDB.createUser(this.collection, {
+        const createUserId = await this.mongoDB.create(this.collection, {
             name,
             email,
             password: hashedPassword
@@ -38,3 +38,5 @@ class UsersService {
         return createUserId;
     }
 }
+
+module.exports = UsersService;
