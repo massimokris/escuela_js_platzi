@@ -1,6 +1,9 @@
 //importamos la libreria express para utilizarla como servidor
 const express = require('express');
 
+//importamos passport para darle seguridad a la rutas
+const passport = require('passport');
+
 //schemas de validación
 //importamos el servicio de userMovies
 //donde esta toda la logica de negocio de nuestra api de userMovies
@@ -14,6 +17,9 @@ const validationHandler = require('../utils/middleware/validationHandler');
 const { movieIdSchema } = require('../utils/schemas/movies');
 const { userIdSchema } = require('../utils/schemas/users');
 const { createUserMovieSchema } = require('../utils/schemas/userMovies');
+
+//importamos la estrategia de jwt
+require('../utils/auth/strategies/jwt');
 
 // aca vamos a definir todas las rutas de las peliculas de usuario
 function userMoviesApi(app) {
@@ -34,6 +40,7 @@ function userMoviesApi(app) {
   //y le indicamos que ese userId lo va a verificar en el query del request
   router.get(
     '/',
+    passport.authenticate('jwt', { session: false }),
     validationHandler({ userId: userIdSchema }, 'query'),
     async function(req, res, next) {
       //sacamos el userId del query del request
@@ -59,6 +66,7 @@ function userMoviesApi(app) {
   //le indicamos al validador de schemas el schema que va a utilizar para validar
   router.post(
     '/',
+    passport.authenticate('jwt', { session: false }),
     validationHandler(createUserMovieSchema),
     async (req, res, next) => {
       //extraemos el body de los datos enviados en el request
@@ -88,6 +96,7 @@ function userMoviesApi(app) {
   //y le indicamos que ese userMovieId lo va a verificar en los params del request
   router.delete(
     '/:userMovieId',
+    passport.authenticate('jwt', { session: false }),
     validationHandler({ userMovieId: movieIdSchema }, 'params'),
     async (req, res, next) => {
       //sacamos el userMovieId del params del request

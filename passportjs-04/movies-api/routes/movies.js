@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 const MoviesService = require('../services/movies');
 
 //schemas de validacion
@@ -18,6 +19,9 @@ const {
   SIXTY_MINUTES_IN_SECONDS
 } = require('../utils/time');
 
+//importamos la estrategia de jwt
+require('../utils/auth/strategies/jwt');
+
 function moviesApi(app) {
   const router = express.Router();
   app.use('/api/movies', router);
@@ -27,7 +31,13 @@ function moviesApi(app) {
   /**
    * Endpoint to get all movies
    */
-  router.get('/', async (req, res, next) => {
+  //utilizamos passport para darle seguridad a los endpoints
+  //le indicamos la estrategia de seguridad que va a utilizar
+  //en este caso jwt
+  //y tambien que no guarde session
+  //en este caso no hace falta un custom callback
+  //porque aqui passport funciona como un middleware
+  router.get('/', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
     cacheResponse(res, FIVE_MINUTES_IN_SECONDS);
     const { tags } = req.query;
     try {
@@ -47,6 +57,7 @@ function moviesApi(app) {
    */
   router.get(
     '/:movieId',
+    passport.authenticate('jwt', { session: false }),
     validationHandler({ movieId: movieIdSchema }, 'params'),
     async (req, res, next) => {
       cacheResponse(res, SIXTY_MINUTES_IN_SECONDS);
@@ -69,6 +80,7 @@ function moviesApi(app) {
    */
   router.post(
     '/',
+    passport.authenticate('jwt', { session: false }),
     validationHandler(createMovieSchema),
     async (req, res, next) => {
       const { body: movie } = req;
@@ -89,6 +101,7 @@ function moviesApi(app) {
    */
   router.put(
     '/:movieId',
+    passport.authenticate('jwt', { session: false }),
     validationHandler({ movieId: movieIdSchema }, 'params'),
     validationHandler(updateMovieSchema),
     async (req, res, next) => {
@@ -114,6 +127,7 @@ function moviesApi(app) {
    */
   router.delete(
     '/:movieId',
+    passport.authenticate('jwt', { session: false }),
     validationHandler({ movieId: movieIdSchema }, 'params'),
     async (req, res, next) => {
       const { movieId } = req.params;

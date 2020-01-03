@@ -47,16 +47,15 @@ function authApi(app) {
         //extraemos el token del request
         const { apiKeyToken } = req.body;
 
+        //validamos que el token exista en el request
         if(!apiKeyToken) {
             next(boom.unauthorized('apiKeyToken is required'));
         }
-
         passport.authenticate('basic', (error, user) => {
             try {
                 //manejamos el error
                 //o la falta se usuario
                 if(error || !user) {
-                    console.trace(user);
                     next(boom.unauthorized());
                 }
 
@@ -126,12 +125,25 @@ function authApi(app) {
         const { body: user } = req;
 
         try {
-            const createdUserId = await usersService.createUser({ user });
+            const userExist = await usersService.getUser(user);
 
-            res.status(201).json({
-                data: createdUserId,
-                message: 'user created'
-            })
+            if(userExist) {
+
+                delete userExist.password;
+
+                res.status(302).json({
+                    data: userExist,
+                    message: 'user already exists'
+                });
+            } else {
+               const createdUserId = await usersService.createUser({ user });
+
+                res.status(201).json({
+                    data: createdUserId,
+                    message: 'user created'
+                });
+            }
+            
         } catch (error) {
             //invocamos un error con la funcionalidad de codigo asincrono next()
             next(error);

@@ -19,10 +19,10 @@ const UsersService = require('../../../services/users');
 passport.use(
   new BasicStrategy( async (email, password, cb) => {
     //instancio los servicio que voy a utilizar del usuario
-    const UserServices = new UsersService();
+    const userServices = new UsersService();
 
     try {
-      const user = await UserServices.getUser({ email });
+      const user = await userServices.getUser({ email });
 
       //verificamos que pudimos recibir el usuario
       if (!user) {
@@ -35,7 +35,7 @@ passport.use(
       //validamos la password del usuario
       //con la libreria bcrypt
       //para manejar los datos encriptados
-      if ( !( await bcrypt(password, user.password) ) ) {
+      if ( !( await bcrypt.compare(password, user.password) ) ) {
         //en caso de error
         //manejamos con el callback
         //y con la libreria boom enviamos un unauthorized
