@@ -13,6 +13,9 @@ const UserMoviesService = require('../services/userMovies');
 //importamos el validationHandler que nos va a servir para validaciones de nuestros schemas
 const validationHandler = require('../utils/middleware/validationHandler');
 
+//validador de scopes de usuario
+const scopesValidationHandler = require('../utils/middleware/scopesValidationHandler');
+
 //importamos todos los schemas necesarios para las validaciones en nuestra api
 const { movieIdSchema } = require('../utils/schemas/movies');
 const { userIdSchema } = require('../utils/schemas/users');
@@ -41,6 +44,7 @@ function userMoviesApi(app) {
   router.get(
     '/',
     passport.authenticate('jwt', { session: false }),
+    scopesValidationHandler(['read:user-movies']),
     validationHandler({ userId: userIdSchema }, 'query'),
     async function(req, res, next) {
       //sacamos el userId del query del request
@@ -67,6 +71,7 @@ function userMoviesApi(app) {
   router.post(
     '/',
     passport.authenticate('jwt', { session: false }),
+    scopesValidationHandler(['create:user-movies']),
     validationHandler(createUserMovieSchema),
     async (req, res, next) => {
       //extraemos el body de los datos enviados en el request
@@ -97,6 +102,7 @@ function userMoviesApi(app) {
   router.delete(
     '/:userMovieId',
     passport.authenticate('jwt', { session: false }),
+    scopesValidationHandler(['delete:user-movies']),
     validationHandler({ userMovieId: movieIdSchema }, 'params'),
     async (req, res, next) => {
       //sacamos el userMovieId del params del request

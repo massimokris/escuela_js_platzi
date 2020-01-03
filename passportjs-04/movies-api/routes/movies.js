@@ -12,6 +12,9 @@ const {
 //validador de schemas
 const validationHandler = require('../utils/middleware/validationHandler');
 
+//validador de scopes de usuario
+const scopesValidationHandler = require('../utils/middleware/scopesValidationHandler');
+
 //cache
 const cacheResponse = require('../utils/cacheResponse');
 const {
@@ -37,20 +40,25 @@ function moviesApi(app) {
   //y tambien que no guarde session
   //en este caso no hace falta un custom callback
   //porque aqui passport funciona como un middleware
-  router.get('/', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
-    cacheResponse(res, FIVE_MINUTES_IN_SECONDS);
-    const { tags } = req.query;
-    try {
-      const movies = await moviesService.getMovies({ tags });
+  router.get(
+    '/',
+    passport.authenticate('jwt', { session: false }),
+    scopesValidationHandler(['read:movies']),
+    async (req, res, next) => {
+      cacheResponse(res, FIVE_MINUTES_IN_SECONDS);
+      const { tags } = req.query;
+      try {
+        const movies = await moviesService.getMovies({ tags });
 
-      res.status(200).json({
-        data: movies,
-        message: 'Movies listed'
-      });
-    } catch (err) {
-      next(err);
+        res.status(200).json({
+          data: movies,
+          message: 'Movies listed'
+        });
+      } catch (err) {
+        next(err);
+      }
     }
-  });
+  );
 
   /**
    * Endpoint to get a specific movie
@@ -58,6 +66,7 @@ function moviesApi(app) {
   router.get(
     '/:movieId',
     passport.authenticate('jwt', { session: false }),
+    scopesValidationHandler(['read:movies']),
     validationHandler({ movieId: movieIdSchema }, 'params'),
     async (req, res, next) => {
       cacheResponse(res, SIXTY_MINUTES_IN_SECONDS);
@@ -81,6 +90,7 @@ function moviesApi(app) {
   router.post(
     '/',
     passport.authenticate('jwt', { session: false }),
+    scopesValidationHandler(['create:movies']),
     validationHandler(createMovieSchema),
     async (req, res, next) => {
       const { body: movie } = req;
@@ -102,6 +112,7 @@ function moviesApi(app) {
   router.put(
     '/:movieId',
     passport.authenticate('jwt', { session: false }),
+    scopesValidationHandler(['update:movies']),
     validationHandler({ movieId: movieIdSchema }, 'params'),
     validationHandler(updateMovieSchema),
     async (req, res, next) => {
@@ -128,6 +139,7 @@ function moviesApi(app) {
   router.delete(
     '/:movieId',
     passport.authenticate('jwt', { session: false }),
+    scopesValidationHandler(['delete:movies']),
     validationHandler({ movieId: movieIdSchema }, 'params'),
     async (req, res, next) => {
       const { movieId } = req.params;
