@@ -1,3 +1,7 @@
+//constante para recordar sesion por tiempo
+const THIRTY_DAYS_IN_SEC = 2592000;
+const TWO_HOURS_IN_SEC = 7200;
+
 //requerimos express para definir las rutas
 const express = require('express');
 
@@ -45,7 +49,7 @@ function authApi(app) {
     //endpoint para el sing-in de usuarios
     router.post('/sign-in', async (req, res, next) => {
         //extraemos el token del request
-        const { apiKeyToken } = req.body;
+        const { apiKeyToken, rememberMe } = req.body;
 
         //validamos que el token exista en el request
         if(!apiKeyToken) {
@@ -69,7 +73,7 @@ function authApi(app) {
                     if(error) {
                         next(error);
                     }
-                    
+
                     //si todo sale bien 
                     //procedemos a buscar el apiKey con el token que recibimos 
                     //en el body del request
@@ -100,7 +104,9 @@ function authApi(app) {
                     const token = jwt.sign(payload, config.authJwtSecret, {
                         //le indicamos la duracion de este token
                         //por temas de seguridad
-                        expiresIn: '15m'
+                        //si el usuario quiere recordar session
+                        //le definimos la duracion en 1 mes si no en 2 hs
+                        expiresIn: rememberMe ? THIRTY_DAYS_IN_SEC : TWO_HOURS_IN_SEC
                     });
 
                     //en caso de exito respondemos con un 200
