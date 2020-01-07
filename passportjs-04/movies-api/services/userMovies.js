@@ -38,7 +38,7 @@ class UserMoviesService {
     //elimino un user movie en base al objeto que recibo como parametro
     const deletedUserMovieId = await this.mongoDB.delete(
       this.collection,
-      userMovie
+      userMovieId
     );
 
     //retorno el id de ese documento eliminado
